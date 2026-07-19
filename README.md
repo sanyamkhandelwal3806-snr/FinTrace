@@ -1,3 +1,4 @@
+
 # FINTRACE
 
 A simple personal finance tracker: log income and expenses, set a monthly
@@ -81,3 +82,4 @@ through the server, which checks you're logged in first.
 - Add more chart types (line chart of balance over time)
 - Swap the JSON files for a real database (SQLite is a gentle next step)
 - Add budgets per category, not just one overall savings goal
+
