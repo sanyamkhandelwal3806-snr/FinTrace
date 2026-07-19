@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transactions - FINTRACE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+
+    <aside class="sidebar">
+      <a href="/dashboard.html" class="sidebar-brand">₹</a>
+      <nav class="sidebar-nav">
+        <a href="/dashboard.html" class="sidebar-icon" title="Dashboard"><i class="bi bi-grid-1x2-fill"></i></a>
+        <a href="/transactions.html" class="sidebar-icon active" title="Transactions"><i class="bi bi-arrow-left-right"></i></a>
+        <a href="/analytics.html" class="sidebar-icon" title="Analytics"><i class="bi bi-pie-chart-fill"></i></a>
+      </nav>
+      <button class="sidebar-icon" title="Log out" onclick="logout()"><i class="bi bi-box-arrow-right"></i></button>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div class="search-pill">
+          <i class="bi bi-search"></i>
+          <input type="text" id="topSearch" placeholder="Search transactions..." />
+          <kbd>Enter ↵</kbd>
+        </div>
+        <div class="topbar-right">
+          <button class="icon-toggle" id="themeToggle"><i class="bi bi-sun"></i></button>
+          <div class="avatar-chip">
+            <div class="avatar-circle" id="avatarInitial">?</div>
+            <span class="uname" id="navUser"></span>
+          </div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <div class="page-header animate-in">
+          <div>
+            <h1 style="font-size:26px;">Transactions</h1>
+            <div class="sub">Every income and expense you've logged.</div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <a href="/api/export" class="btn btn-secondary btn-small"><i class="bi bi-download"></i> Export CSV</a>
+          </div>
+        </div>
+
+        <!-- Add transaction -->
+        <div class="card lift animate-in" style="--delay:0.05s">
+          <h2 style="font-size:16px;">Add a transaction</h2>
+          <form id="addForm">
+            <div class="tx-form-grid" style="margin-top:12px;">
+              <div class="type-toggle" id="typeToggle">
+                <button type="button" class="active" data-type="expense">Expense</button>
+                <button type="button" data-type="income">Income</button>
+              </div>
+              <select id="categorySelect" required></select>
+              <input type="number" id="amountInput" placeholder="Amount" min="0.01" step="0.01" required />
+              <input type="date" id="dateInput" required />
+              <input type="text" id="noteInput" placeholder="Note (optional)" />
+              <button type="submit" class="btn"><i class="bi bi-plus-lg"></i> Add</button>
+            </div>
+            <p class="error-text" id="formError"></p>
+          </form>
+        </div>
+
+        <!-- Filters -->
+        <div class="filter-bar animate-in" style="--delay:0.1s; margin-top:20px;">
+          <input type="text" id="searchInput" placeholder="Search notes or category..." />
+          <select id="filterType">
+            <option value="">All types</option>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </select>
+          <select id="filterCategory"><option value="">All categories</option></select>
+          <input type="month" id="filterMonth" />
+          <select id="sortSelect">
+            <option value="date_desc">Newest first</option>
+            <option value="date_asc">Oldest first</option>
+            <option value="amount_desc">Amount: high to low</option>
+            <option value="amount_asc">Amount: low to high</option>
+          </select>
+        </div>
+
+        <!-- List -->
+        <div class="card lift animate-in" style="--delay:0.15s">
+          <div class="tx-list" id="txList"></div>
+          <div class="empty-state" id="emptyState" style="display:none;">
+            <i class="bi bi-inbox"></i>
+            <div class="big">Nothing here</div>
+            <div>Try changing your filters, or add a transaction above.</div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Edit modal -->
+  <div class="modal-overlay" id="editModal">
+    <div class="modal">
+      <h3>Edit transaction</h3>
+      <form id="editForm">
+        <input type="hidden" id="editId" />
+        <div class="field">
+          <label for="editCategory">Category</label>
+          <select id="editCategory" required></select>
+        </div>
+        <div class="field">
+          <label for="editAmount">Amount</label>
+          <input type="number" id="editAmount" min="0.01" step="0.01" required />
+        </div>
+        <div class="field">
+          <label for="editDate">Date</label>
+          <input type="date" id="editDate" required />
+        </div>
+        <div class="field">
+          <label for="editNote">Note</label>
+          <input type="text" id="editNote" />
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary btn" id="cancelEdit">Cancel</button>
+          <button type="submit" class="btn">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/transactions.js"></script>
+</body>
+</html>

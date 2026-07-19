@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log in - FINTRACE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <div class="auth-page">
+    <div class="auth-card animate-in">
+      <div class="auth-brand">
+        <span class="mark">₹</span>
+        <h1>FINTRACE</h1>
+      </div>
+      <p class="sub">Log in to see where your money went.</p>
+
+      <form id="loginForm">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-full">
+          <i class="bi bi-box-arrow-in-right"></i> Log in
+        </button>
+        <p class="error-text" id="errorText"></p>
+      </form>
+
+      <p class="auth-switch">New here? <a href="/register.html">Create an account</a></p>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const errorText = document.getElementById("errorText");
+      errorText.textContent = "";
+
+      try {
+        await apiRequest("/api/login", "POST", { email, password });
+        window.location.href = "/dashboard.html";
+      } catch (err) {
+        errorText.textContent = err.message;
+      }
+    });
+  </script>
+</body>
+</html>

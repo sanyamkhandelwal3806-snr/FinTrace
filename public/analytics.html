@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics - FINTRACE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="app-shell">
+
+    <aside class="sidebar">
+      <a href="/dashboard.html" class="sidebar-brand">₹</a>
+      <nav class="sidebar-nav">
+        <a href="/dashboard.html" class="sidebar-icon" title="Dashboard"><i class="bi bi-grid-1x2-fill"></i></a>
+        <a href="/transactions.html" class="sidebar-icon" title="Transactions"><i class="bi bi-arrow-left-right"></i></a>
+        <a href="/analytics.html" class="sidebar-icon active" title="Analytics"><i class="bi bi-pie-chart-fill"></i></a>
+      </nav>
+      <button class="sidebar-icon" title="Log out" onclick="logout()"><i class="bi bi-box-arrow-right"></i></button>
+    </aside>
+
+    <div class="main-area">
+      <header class="topbar">
+        <div class="search-pill">
+          <i class="bi bi-search"></i>
+          <input type="text" id="topSearch" placeholder="Search transactions..." />
+          <kbd>Enter ↵</kbd>
+        </div>
+        <div class="topbar-right">
+          <button class="icon-toggle" id="themeToggle"><i class="bi bi-sun"></i></button>
+          <div class="avatar-chip">
+            <div class="avatar-circle" id="avatarInitial">?</div>
+            <span class="uname" id="navUser"></span>
+          </div>
+        </div>
+      </header>
+
+      <main class="page-content">
+        <div class="page-header animate-in">
+          <div>
+            <h1 style="font-size:26px;">Analytics</h1>
+            <div class="sub" id="monthLabel"></div>
+          </div>
+          <input type="month" id="monthPicker" />
+        </div>
+
+        <div class="chart-grid">
+          <div class="card lift chart-card animate-in" style="--delay:0.05s">
+            <h2 style="font-size:15px;">Spending by category</h2>
+            <canvas id="categoryChart"></canvas>
+            <div class="chart-empty" id="categoryEmpty" style="display:none;">No expenses logged this month yet.</div>
+          </div>
+          <div class="card lift chart-card animate-in" style="--delay:0.1s">
+            <h2 style="font-size:15px;">Income vs. expenses (last 6 months)</h2>
+            <canvas id="historyChart"></canvas>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/shared.js"></script>
+  <script src="/js/analytics.js"></script>
+</body>
+</html>

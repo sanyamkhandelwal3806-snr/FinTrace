@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>FINTRACE</title>
+</head>
+<body>
+  <script>
+    // This page has no UI - it just sends the visitor to the right place.
+    fetch("/api/me")
+      .then((res) => (res.ok ? (window.location.href = "/dashboard.html") : (window.location.href = "/login.html")))
+      .catch(() => (window.location.href = "/login.html"));
+  </script>
+</body>
+</html>
