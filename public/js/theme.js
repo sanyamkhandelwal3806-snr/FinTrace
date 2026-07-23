@@ -1,9 +1,3 @@
-// theme.js
-// Handles switching between light and dark mode.
-// Same mechanism as before: the chosen theme is saved in localStorage
-// so it stays the same next time the user opens the site.
-// Only change: the default is now "dark" (to match the new look),
-// and the toggle button gets a small spin animation on click.
 
 function applyStoredTheme() {
   const saved = localStorage.getItem("fintrace-theme") || "dark";
@@ -37,7 +31,6 @@ function updateToggleIcon(theme) {
   target.className = theme === "dark" ? "bi bi-sun" : "bi bi-moon-stars";
 }
 
-// Apply the theme as early as possible to avoid a flash of the wrong theme
 applyStoredTheme();
 
 document.addEventListener("DOMContentLoaded", () => {

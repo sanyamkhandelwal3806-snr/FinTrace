@@ -1,4 +1,3 @@
-// transactions.js - powers transactions.html
 
 let categories = { income: [], expense: [] };
 let currentType = "expense"; // for the "add transaction" form

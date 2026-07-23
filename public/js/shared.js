@@ -1,7 +1,3 @@
-// shared.js
-// Small helpers used by more than one page, so they only need to be
-// written once: category -> icon lookup, money/date formatting,
-// a count-up number animation, and the HTML for one transaction row.
 
 const CATEGORY_ICONS = {
   Salary: "bi-cash-stack",

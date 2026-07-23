@@ -1,7 +1,3 @@
-// api.js
-// A tiny helper so every page doesn't have to repeat the same
-// fetch() + JSON + error-handling code. Every function here talks
-// to one of the routes defined in server.js.
 
 async function apiRequest(url, method = "GET", body = null) {
   const options = {
@@ -19,8 +15,7 @@ async function apiRequest(url, method = "GET", body = null) {
   return data;
 }
 
-// Redirects to the login page if the user is not authenticated.
-// Every protected page (dashboard, transactions, analytics) calls this first.
+
 async function requireAuth() {
   try {
     const user = await apiRequest("/api/me");
@@ -35,11 +30,6 @@ async function logout() {
   window.location.href = "/login.html";
 }
 
-// ---------------------------------------------------------------------
-// Toasts - small feedback popups in the bottom-right corner.
-// Used after adding/editing/deleting a transaction, or when something
-// goes wrong. Purely a UI nicety layered on top of the API calls above.
-// ---------------------------------------------------------------------
 
 function ensureToastStack() {
   let stack = document.querySelector(".toast-stack");

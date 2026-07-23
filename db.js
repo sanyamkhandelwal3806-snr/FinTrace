@@ -1,13 +1,3 @@
-// db.js
-// -----------------------------------------------------------------------
-// FINTRACE does not use a real database engine (like MongoDB or MySQL).
-// Instead, it stores everything in two simple JSON files inside /data.
-// This is the EASIEST way to understand how a "database" works, because
-// you can literally open the files and read the data yourself.
-//
-// In a bigger real-world app you would swap this file for a proper
-// database, but every function call in server.js would stay the same.
-// -----------------------------------------------------------------------
 
 const fs = require("fs");
 const path = require("path");

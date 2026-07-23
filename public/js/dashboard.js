@@ -1,4 +1,3 @@
-// dashboard.js - powers dashboard.html
 
 let categories = { income: [], expense: [] };
 let currentType = "expense";

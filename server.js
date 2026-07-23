@@ -1,14 +1,4 @@
 // server.js
-// -----------------------------------------------------------------------
-// This is the ONLY backend file that handles requests. It:
-//   1. Serves the HTML/CSS/JS files in /public
-//   2. Provides a small REST API (under /api/...) that the frontend
-//      talks to using fetch()
-//
-// Read it top to bottom - it is organised in the order a request flows:
-// setup -> middleware -> auth routes -> transaction routes -> summary ->
-// goal -> export -> start server.
-// -----------------------------------------------------------------------
 
 const express = require("express");
 const session = require("express-session");
@@ -20,14 +10,9 @@ const db = require("./db");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Categories are defined once here so both backend validation and the
-// frontend dropdowns can stay in sync (see /api/categories below).
 const INCOME_CATEGORIES = ["Salary", "Freelancing", "Business", "Investments", "Scholarship", "Pocket Money", "Other"];
 const EXPENSE_CATEGORIES = ["Food", "Travel", "Shopping", "Education", "Entertainment", "Health", "Bills", "Utilities", "Other"];
 
-// ---------------------------------------------------------------------
-// Middleware
-// ---------------------------------------------------------------------
 
 app.use(express.json()); // lets us read JSON bodies sent by fetch()
 app.use(express.static(path.join(__dirname, "public"))); // serves login.html, dashboard.html, css/js, etc.
@@ -41,8 +26,6 @@ app.use(
   })
 );
 
-// This middleware protects API routes that require the user to be logged in.
-// Every protected route just adds `requireLogin` before its handler.
 function requireLogin(req, res, next) {
   if (!req.session.userId) {
     return res.status(401).json({ error: "Please log in first." });
@@ -50,11 +33,6 @@ function requireLogin(req, res, next) {
   next();
 }
 
-// ---------------------------------------------------------------------
-// AUTH ROUTES
-// ---------------------------------------------------------------------
-
-// Create a new account
 app.post("/api/register", async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -68,7 +46,6 @@ app.post("/api/register", async (req, res) => {
     return res.status(400).json({ error: "An account with that email already exists." });
   }
 
-  // Never store plain-text passwords - we hash them with bcrypt.
   const passwordHash = await bcrypt.hash(password, 10);
 
   const newUser = {
@@ -84,7 +61,6 @@ app.post("/api/register", async (req, res) => {
   users.push(newUser);
   db.saveUsers(users);
 
-  // Log the user in immediately after registering
   req.session.userId = newUser.id;
   res.json({ id: newUser.id, name: newUser.name, email: newUser.email });
 });
@@ -126,13 +102,6 @@ app.get("/api/categories", (req, res) => {
   res.json({ income: INCOME_CATEGORIES, expense: EXPENSE_CATEGORIES });
 });
 
-// ---------------------------------------------------------------------
-// TRANSACTION ROUTES
-// ---------------------------------------------------------------------
-
-// Get all transactions for the logged-in user, with optional filters:
-//   ?month=2026-07   ?type=income|expense   ?category=Food
-//   ?search=keyword  ?sort=date_desc|date_asc|amount_desc|amount_asc
 app.get("/api/transactions", requireLogin, (req, res) => {
   const { month, type, category, search, sort } = req.query;
 
@@ -240,9 +209,6 @@ app.delete("/api/transactions/:id", requireLogin, (req, res) => {
   res.json({ ok: true });
 });
 
-// ---------------------------------------------------------------------
-// SUMMARY ROUTE (powers the dashboard + analytics charts)
-// ---------------------------------------------------------------------
 
 app.get("/api/summary", requireLogin, (req, res) => {
   const user = db.findUserById(req.session.userId);
@@ -310,9 +276,6 @@ app.get("/api/summary", requireLogin, (req, res) => {
   });
 });
 
-// ---------------------------------------------------------------------
-// GOAL ROUTE
-// ---------------------------------------------------------------------
 
 app.post("/api/goal", requireLogin, (req, res) => {
   const { monthlyGoal } = req.body;
@@ -330,9 +293,6 @@ app.post("/api/goal", requireLogin, (req, res) => {
   res.json({ monthlyGoal: numericGoal });
 });
 
-// ---------------------------------------------------------------------
-// EXPORT ROUTE (download all transactions as a CSV file)
-// ---------------------------------------------------------------------
 
 app.get("/api/export", requireLogin, (req, res) => {
   const transactions = db
@@ -350,9 +310,6 @@ app.get("/api/export", requireLogin, (req, res) => {
   res.send(header + rows);
 });
 
-// ---------------------------------------------------------------------
-// START SERVER
-// ---------------------------------------------------------------------
 
 app.listen(PORT, () => {
   console.log(`FINTRACE is running at http://localhost:${PORT}`);
